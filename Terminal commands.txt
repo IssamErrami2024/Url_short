@@ -1,0 +1,23 @@
+Using terminal of visual studio code : i wrote those commands
+
+
+W:\Arbieten\INTUS\> composer require laravel/installer
+
+laravel new Urls           // For creation a new Laravel project named with the necessary project structure and files too.
+
+php artisan serve  // For starting a local development server for the Laravel project, allowing to access to environment.http://localhost:8000
+
+composer require laravel/ui //For creating login and register pages with VueJS setup.
+
+php artisan ui vue --auth  // creation essential elements for login and registration functionalities within the project
+
+npm install               // Instalation the JavaScript dependencies for VueJs and other libraries for UI
+
+npm run dev              // Starting a development server for the front-end
+
+npm install vue-loader@^16.8.8 --save-dev --legacy-peer-deps     // To install the Vue.js loader for Webpack
+
+npm update vue-loader   // To update the Vue.js loader to the latest version
+
+npm run dev            //  Restarting the development server to recognize the changes 
+

@@ -1,0 +1,67 @@
+create project : 
+laravel new url-shortener
+
+Navigate to Project Directory:
+Bash
+cd url-shortener
+
+Install Vue.js:
+Bash
+npm install vue
+
+
+Database and Model (app/Models/Url.php):
+
+Create a migration to define the table with columns for (primary key), (unique), (unique, 6-character alphanumeric), and .urlsidlong_urlshort_urltimestamps
+Create the model: Url
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Url extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['long_url', 'short_url'];
+
+    public static function generateShortUrl(string $longUrl): string
+    {
+        // Generate a unique 6-character alphanumeric hash
+        $shortUrl = base_convert(str_random(6), 10, 36);
+
+        // Check for duplicates and generate a new one if needed
+        while (static::where('short_url', $shortUrl)->exists()) {
+            $shortUrl = base_convert(str_random(6), 10, 36);
+        }
+
+        return $shortUrl;
+    }
+}
+
+
+Laravel Controller (app/Http/Controllers/UrlController.php):
+
+Create a to handle URL shortening requests: UrlController
+PHP
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Url;
+use Google\Cloud\SafeBrowsing\V4\SafeBrowsingClient; // Google Safe Browsing API (example)
+use Illuminate\Http\Request;
+
+class UrlController extends Controller
+{
+    public function shorten(Request $request)
+    {
+        $longUrl = $request->input('long_url');
+
+        // Validate URL format (optional)
+
+        $url = Url::where('long_url', $longUrl)->first();
+        if ($url) {
+            // Duplicate URL

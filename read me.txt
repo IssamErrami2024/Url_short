@@ -1,0 +1,174 @@
+Prerequisites for the task:
+
+PHP (version 7.4 or higher)
+Composer (package manager for PHP)
+Node.js and npm (package manager for Node.js)
+VueJs
+MySQL database server or compatible alternative
+
+********** Update database name **************
+
+
+knowing that i create database name "db_url_shortner", so i have update the file "env" from the project:
+
+Urls/
+├── app/              
+│   └── ...         
+├── env   #i opened these file, to change these line : DB_DATABASE=db_url_shortner
+
+
+********** Inside file: web.php **************
+
+
+Urls/
+├── app/              
+│   └── ...         
+├── routes/              # Routing configuration (API and web routes)
+│   ├── api.php          # API routes for URL shortening
+│   └── web.php          # Web routes for frontend UI
+
+i changed the name of the view from: 'welcome' to 'urlShortner' in the code:
+
+Route::get('/', function () {
+    return view('urlShortner');
+});
+
+
+**************** Update the name of the view *************
+
+
+depending on the strecture of the project bellow:
+
+Urls/
+├── app/              
+│   └── ...           
+│           
+├── resources/                # Various resource files
+│   └── views/                # Blade templates (optional)
+        |_ welcome.blade.php 
+
+i changed the name from:  "welcome.blade.php". file to "urlshortener.blade.php"
+
+
+************* file: urlShortner.blade.php *****************
+
+
+i deleted the code par default, then i write :
+
+@extends('layouts.app')
+
+@section('content')
+    
+@endsection
+
+************* file : app.blade.php ************************
+
+Urls/
+├── app/              
+│   └── ...           
+│ 
+├── resources/                # Various resource files
+│   └── views/                # Blade templates (optional)
+│       └── layout/           # to provide a consistent foundation for all or most of your Blade views.app.blade.php
+│           └── app.blade.php # 
+
+
+1) i copied the part : @yield('content') from the body of the page : 
+
+ <div class="container">
+        @yield('content')
+    </div>
+
+2) i pasted in the <head> part of <head> , then i changed its name to 'style' as bellow:
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @yield('style')
+</head> 
+
+
+************ file: urlShortner.blade.php ******************
+
+
+Urls/
+├── app/              
+│   └── ...           
+│           
+├── resources/                # Various resource files
+│   └── views/                # Blade templates (optional)
+        |_ urlShortner.blade.php 
+
+obviously, i back to these file to upate changes :
+
+
+
+	@extends('layouts.app')
+
+
+	   @section('styles')
+
+           @endsection
+
+
+           @section('content')
+    
+           @endsection
+
+
+************ folder: Component  *****************
+
+i added a new file "urlShortner.vue" inside the Folder: Component as bellow
+
+Urls/
+├── app/              
+│   └── ...           
+│ 
+├── resources/               
+│   └── Js/                         #  holds JavaScript-related files
+│       └── Component/              #  stores reusable Vue component 
+│           └──ExempleComponent.vue
+            └──urlShortner.vue
+
+
+i moved to  the file App.js
+
+
+Urls/
+├── app/              
+│   └── ...           
+│ 
+├── resources/               
+│   └── Js/                         
+│       └── App.js                  #  initializing the front-end JavaScript setup 
+
+here i added these code to register a Vue component named "urlShortner" , making it accessible for use in our application's templates
+thus when i use the tag in a Blade template, Vue renders the content defined within  "urlShortner.vue"
+
+ Vue.component('urlShortner', require('./components/urlShortner.vue').default);
+
+
+********** code file urlShortner.balde.php *********
+
+
+	@extends('layouts.app')
+
+
+           @section('styles')   // It defines a section for CSS styles 
+
+
+           @endsection
+
+
+           @section('content')  // It defines the main content section of the page
+
+              <div id="app" class="wrapper_url_shortener">
+                <url-shortener authorized-user="{auth()->user()->id ?? null}"></url-shortener>
+              </div>
+
+           @endsection
+
+
+************ work on code urlshortner.balde.vue  ***********
